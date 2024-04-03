@@ -4,8 +4,7 @@ const url = "https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json"
 d3.json(url).then(data => {
     const samples = data.samples;
     const nameIds = samples.map(sample => parseInt(sample.id));
-    const metaData = data.metadata;
-    
+    console.log(data);
     // Create dropdown menu and update horizontal chart
     var dropdown = d3.select("#selDataset")
         .selectAll("option")
@@ -69,7 +68,25 @@ d3.json(url).then(data => {
         Plotly.newPlot('bubble', data2, layout2);
 
         // Populate the Demographic Info
-    }
+        d3.json("samples.json").then((data) => {
+            //let filteredData = samples.filter(sample => parseInt(sample.id) === parseInt(name_id))[0];
+            const metadatas = data.metadata;
+            console.log(metadatas);
+            let sampleFilterMetadata = metadatas.filter(metadata => parseInt(metadata.id) === parseInt(name_id))[0];
+            console.log(sampleFilterMetadata);
+            // Select the sample-metadata element
+            let sampleMetadataElement = d3.select("#sample-metadata");
+
+            // Clear any existing content in the card body
+            sampleMetadataElement.html("");
+
+            // Iterate through the key-value pairs in the sample metadata
+            Object.entries(sampleFilterMetadata).forEach(([key, value]) => {
+                // Append each key-value pair as a paragraph to the card body
+                sampleMetadataElement.append("p").text(`${key}: ${value}`);
+            });
+        });
+    };
 
     // Event listener for dropdown change
     d3.select("#selDataset").on("change", function() {
