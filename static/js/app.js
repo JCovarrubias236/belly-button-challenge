@@ -145,7 +145,7 @@ d3.json(url).then(data => {
                 ]
             };
 
-        Plotly.newPlot("gauge", data3, layout3);
+            Plotly.newPlot("gauge", data3, layout3);
         });
     };
 
