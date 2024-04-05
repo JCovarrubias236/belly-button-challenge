@@ -85,6 +85,67 @@ d3.json(url).then(data => {
                 // Append each key-value pair as a paragraph to the card body
                 sampleMetadataElement.append("p").text(`${key}: ${value}`);
             });
+
+            // Create Gauge Chart
+            const washfreq = sampleFilterMetadata.wfreq;
+            console.log(washfreq);
+
+            let data3 = [
+                {
+                    mode: "gauge",
+                    type: "indicator",
+                    value: washfreq,
+                    title: {text: "Belly Button Washing Frequency<br>Scrubs per Week",
+                            align: "center",
+                            font: {size: 25}},
+                    gauge: {
+                        shape: "angular",
+                        axis: {
+                            range:[0,9],
+                            visible: false
+                        },
+                        steps: [
+                            { range: [0, 1], color: "red", text: "0-1" },
+                            { range: [1, 2], color: "orange", text: "1-2" },
+                            { range: [2, 3], color: "yellow", text: "2-3" },
+                            { range: [3, 4], color: "lightgreen", text: "3-4" },
+                            { range: [4, 5], color: "lime", text: "4-5" },
+                            { range: [5, 6], color: "green", text: "5-6" },
+                            { range: [6, 7], color: "darkgreen", text: "6-7" },
+                            { range: [7, 8], color: "seagreen", text: "7-8" },
+                            { range: [8, 9], color: "forestgreen", text: "8-9" }
+                        ],
+                    }
+                }
+            ]
+
+            // Calculate needle position
+            var angle = 180 - (washfreq / 9) * 180; // Calculate angle based on washfreq value
+            var r = 0.7; // Distance from the center (adjust as needed)
+            var x_head = r * Math.cos(Math.PI / 180 * angle);
+            var y_head = r * Math.sin(Math.PI / 180 * angle);
+
+            let layout3 = {
+                xaxis: { range: [0, 1], showgrid: false, zeroline: false, visible: false },
+                yaxis: { range: [0, 1], showgrid: false, zeroline: false, visible: false },
+                showlegend: false,
+                annotations: [
+                    {
+                        ax: 0.5,
+                        ay: 0,
+                        axref: "x",
+                        ayref: "y",
+                        x: 0.5 + x_head,
+                        y: y_head,
+                        xref: "x",
+                        yref: "y",
+                        showarrow: true,
+                        arrowhead: 9,
+                    }
+                ]
+            };
+
+        Plotly.newPlot("gauge", data3, layout3);
         });
     };
 
