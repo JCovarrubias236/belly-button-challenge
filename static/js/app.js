@@ -144,7 +144,11 @@ d3.json(url).then(data => {
                 ]
             };
 
+<<<<<<< HEAD
         Plotly.newPlot("gauge", data3, layout3);
+=======
+            Plotly.newPlot("gauge", data3, layout3);
+>>>>>>> 414a15b1d879a7777cac07bab22e84989440f145
         });
     };
 
